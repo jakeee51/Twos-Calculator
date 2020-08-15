@@ -8,3 +8,6 @@
 **Outputs:**
 * Calculated Result *(display decimal representation)*
 * Truncated Result *(display decimal representation)*
+
+1. Take input in as string
+2. Based on *'w'* convert to signed integers
