@@ -1,2 +1,3 @@
 #!/bin/bash
-./portfolio/twos_calc $1 $2 $3 $4; #
+g++ twos_calc.cpp -o twos_calc -std=c++11; #
+./twos_calc $1 $2 $3 $4; #
