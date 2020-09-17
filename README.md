@@ -3,7 +3,7 @@
 **Inputs:**
 * Number of bits (w)
 * 2 two's complement binary numbers *(display decimal representation)*
-* Arithmetic Operation (+-/\x)
+* Arithmetic Operation (+, -, x, /)
 
 **Outputs:**
 * Calculated Result *(display decimal representation)*
