@@ -11,6 +11,7 @@
 
 <h2><b>Example:</b></h2>
 
+Here we do a 4 bit addition of 2 + 1
 `$ ./run.sh 4 + 0010 0001`
 
 **Output:**
