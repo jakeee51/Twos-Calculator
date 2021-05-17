@@ -17,4 +17,6 @@ Here we do a 4 bit addition of 2 + 1
 
 **Output:**
 
+The resulting sum gives the calculated number, calculated decimal, truncated number, truncated decimal representations respectively.
+
 `$ 00011,3,0011,3`
