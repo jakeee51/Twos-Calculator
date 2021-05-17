@@ -14,7 +14,8 @@ Version: 1.0.2
 
 using namespace std;
 
-signed int BinStr2Int(string bin) { // Helper function: converts binary string to int
+// Helper function: converts binary string to int for 
+signed int BinaryStr2Int(string bin) {
 	signed int ret = 0; int bits = bin.length();
 	for(int i = 0; i < bits; i++) {
 		signed int val = (signed int)pow(2, bits - 1 - i);
@@ -29,10 +30,11 @@ signed int BinStr2Int(string bin) { // Helper function: converts binary string t
 	return ret;
 }
 
-string SlimBin(string bin, int w) { // Helper function:
+// Helper function for addition & subtraction: remove the padded 0's added by default by bitset<64>
+string unpad_binary(string bin, int w) {
 	int bits = bin.length(); string ret = "-1";
 	int all_one = 0, idx = bin.length() - w - 1;
-	if(BinStr2Int(bin) == 0) // Return 0 binary with respect to 'w'
+	if(BinaryStr2Int(bin) == 0) // Return 0 binary with respect to 'w'
 		return bin.substr(bin.length() - w);
 	for(int i = 0; i < bits; i++) {
 		if(bin[i] == '1') {
@@ -50,10 +52,11 @@ string SlimBin(string bin, int w) { // Helper function:
 	return ret;
 }
 
-string SlimBin2(string bin, int w) { // Helper function:
+// Helper function for multiplication & division: remove the padded 0's added by default by bitset<64>
+string unpad_binary2(string bin, int w) {
 	int bits = bin.length(); string ret = "-1";
 	int all_one = 0;
-	if(BinStr2Int(bin) == 0) // Return 0 binary with respect to 'w'
+	if(BinaryStr2Int(bin) == 0) // Return 0 binary with respect to 'w'
 		return bin.substr(bin.length() - 2 * w);
 	if(ret.length() > w + 1)
 		ret = ret.substr(1);
@@ -64,58 +67,63 @@ string SlimBin2(string bin, int w) { // Helper function:
 	return ret;
 }
 
+// Addition
 string twos_add(int w, signed int bin1, signed int bin2) {
 	signed int res = bin1 + bin2; string ret = "";
 	string binary_str = (string)bitset<64>(res).to_string();
-	string trunc_bin = binary_str.substr(binary_str.length()-w);
+	string trunc_bin = binary_str.substr(binary_str.length()-w); // Truncated Binary
 	string dec_rep = to_string(res); // Decimal Rep
-	string dec_trunc = to_string(BinStr2Int(trunc_bin)); // Truncated Decimal
-	string bin_rep = SlimBin(binary_str, w); // Binary Rep
+	string dec_trunc = to_string(BinaryStr2Int(trunc_bin)); // Truncated Decimal
+	string bin_rep = unpad_binary(binary_str, w); // Binary Rep
 	ret = bin_rep + "," + dec_rep + "," + trunc_bin + "," + dec_trunc;
 	return ret;
 }
 
+// Subtraction
 string twos_sub(int w, signed int bin1, signed int bin2) {
 	signed int res = bin1 - bin2; string ret = "";
 	string binary_str = (string)bitset<64>(res).to_string();
-	string trunc_bin = binary_str.substr(binary_str.length()-w);
+	string trunc_bin = binary_str.substr(binary_str.length()-w); // Truncated Binary
 	string dec_rep = to_string(res); // Decimal Rep
-	string dec_trunc = to_string(BinStr2Int(trunc_bin)); // Truncated Decimal
-	string bin_rep = SlimBin(binary_str, w); // Binary Rep
+	string dec_trunc = to_string(BinaryStr2Int(trunc_bin)); // Truncated Decimal
+	string bin_rep = unpad_binary(binary_str, w); // Binary Rep
 	ret = bin_rep + "," + dec_rep + "," + trunc_bin + "," + dec_trunc;
 	return ret;
 }
 
+// Multiplication
 string twos_mult(int w, signed int bin1, signed int bin2) {
 	signed int res = bin1 * bin2; string ret = ""; string sign = "";
 	string binary_str = (string)bitset<64>(res).to_string();
-	string trunc_bin = binary_str.substr(binary_str.length() - w);
+	string trunc_bin = binary_str.substr(binary_str.length() - w); // Truncated Binary
 	string dec_rep = to_string(res); // Decimal Rep
 	string dec_trunc = to_string(res % (signed int)pow(2, w)); // Truncated Decimal
-	string bin_rep = SlimBin2(binary_str.substr(binary_str.length() - (2 * w)), w); // Binary Rep
+	string bin_rep = unpad_binary2(binary_str.substr(binary_str.length() - (2 * w)), w); // Binary Rep
 	if(trunc_bin[0] == '1' && dec_trunc[0] != '-')
 		sign = "-";
 	ret = bin_rep + "," + dec_rep + "," + trunc_bin + "," + sign + dec_trunc;
 	return ret;
 }
 
+// Division
 string twos_div(int w, signed int bin1, signed int bin2) {
 	signed int res = bin1 / bin2; string ret = ""; string sign = "";
 	string binary_str = (string)bitset<64>(res).to_string();
-	string trunc_bin = binary_str.substr(binary_str.length() - w);
+	string trunc_bin = binary_str.substr(binary_str.length() - w); // Truncated Binary
 	string dec_rep = to_string(res); // Decimal Rep
 	string dec_trunc = to_string(res % (signed int)pow(2, w)); // Truncated Decimal
-	string bin_rep = SlimBin2(binary_str.substr(binary_str.length() - ( 2 * w)), w); // Binary Rep
+	string bin_rep = unpad_binary2(binary_str.substr(binary_str.length() - ( 2 * w)), w); // Binary Rep
 	if(trunc_bin[0] == '1' && dec_trunc[0] != '-')
 		sign = "-";
 	ret = bin_rep + "," + dec_rep + "," + trunc_bin + "," + sign + dec_trunc;
 	return ret;
 }
 
+// Two's Compliment Operation Handler
 string twos_calc(int w, int op, string num1, string num2) {
 	string ret;
-	signed int bin1 = BinStr2Int(num1);
-	signed int bin2 = BinStr2Int(num2);
+	signed int bin1 = BinaryStr2Int(num1);
+	signed int bin2 = BinaryStr2Int(num2);
 
 	switch(op) {
 		case 0:
@@ -157,7 +165,7 @@ int main(int argc, char *argv[]) {
 		op = 1;
 	} else if(arith == 'x') { // Multiplication
 		op = 2;
-	} else { // / Division
+	} else { // '/' Division
 		op = 3;
 	}
 	cout << twos_calc(w, op, in1, in2) << endl;
